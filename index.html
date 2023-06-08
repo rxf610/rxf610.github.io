@@ -1,0 +1,170 @@
+<html>
+<head>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css" integrity="sha384-b6lVK+yci+bfDmaY1u0zE8YYJt0TZxLEAFyYSLHId4xoVvsrQu3INevFKo+Xir8e" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>  
+</head>
+ 
+    <script type="text/javascript">
+    function start() {
+
+        var deviceID = document.getElementById('did').value;
+        var accessToken = document.getElementById('accesstoken').value;
+		
+		var button = document.getElementById("refreshdata");
+		
+      fetch('https://api.particle.io/v1/devices/'+deviceID+'/temperature?access_token='+accessToken, {
+    method: 'GET',
+    headers: {
+        'Accept': 'application/json',
+    },
+})
+   .then(response => response.json())
+   .then(response => document.getElementById("tempdata").innerHTML = JSON.stringify(response.result) + "<sup>&deg;</sup>F")
+   .then(response => console.log(JSON.stringify(response)));
+   
+         fetch('https://api.particle.io/v1/devices/'+deviceID+'/averageTemperature?access_token='+accessToken, {
+    method: 'GET',
+    headers: {
+        'Accept': 'application/json',
+    },
+})
+   .then(response => response.json())
+   .then(response => document.getElementById("avgtempdata").innerHTML = JSON.stringify(response.result, function() {
+    return response.result.toFixed ? Number(response.result.toFixed(2)) : response.result;
+}) + "<sup>&deg;</sup>F")
+   .then(response => console.log(JSON.stringify(response)));
+
+   
+fetch('https://api.particle.io/v1/devices/'+deviceID+'/humidity?access_token='+accessToken, {
+    method: 'GET',
+    headers: {
+        'Accept': 'application/json',
+    },
+})
+   .then(response => response.json())
+   .then(response => document.getElementById("humiddata").innerHTML = JSON.stringify(response.result) + "%")
+   .then(response => console.log(JSON.stringify(response))); 
+   
+   fetch('https://api.particle.io/v1/devices/'+deviceID+'/averageHumidity?access_token='+accessToken, {
+    method: 'GET',
+    headers: {
+        'Accept': 'application/json',
+    },
+})
+   .then(response => response.json())
+   .then(response => document.getElementById("avghumiddata").innerHTML = JSON.stringify(response.result, function() {
+    return response.result.toFixed ? Number(response.result.toFixed(2)) : response.result;
+}) + "%")
+   .then(response => console.log(JSON.stringify(response))); 
+ 
+   
+   fetch('https://api.particle.io/v1/devices/'+deviceID+'/soilMoisture?access_token='+accessToken, {
+    method: 'GET',
+    headers: {
+        'Accept': 'application/json',
+    },
+})
+   .then(response => response.json())
+   .then(response => document.getElementById("smdata").innerHTML = JSON.stringify(response.result))
+   .then(response => console.log(JSON.stringify(response)));
+
+   fetch('https://api.particle.io/v1/devices/'+deviceID+'/averageSoilMoisture?access_token='+accessToken, {
+    method: 'GET',
+    headers: {
+        'Accept': 'application/json',
+    },
+})
+   .then(response => response.json())
+   .then(response => document.getElementById("avgsmdata").innerHTML = JSON.stringify(response.result, function() {
+    return response.result.toFixed ? Number(response.result.toFixed(2)) : response.result;
+}))
+   .then(response => console.log(JSON.stringify(response)));
+ 
+      fetch('https://api.particle.io/v1/devices/'+deviceID+'/lightSensorReading?access_token='+accessToken, {
+    method: 'GET',
+    headers: {
+        'Accept': 'application/json',
+    },
+})
+   .then(response => response.json())
+   .then(response => document.getElementById("lightdata").innerHTML = JSON.stringify(response.result))
+   .then(response => console.log(JSON.stringify(response)));   
+  
+
+         fetch('https://api.particle.io/v1/devices/'+deviceID+'/totalGoodLightMinutes?access_token='+accessToken, {
+    method: 'GET',
+    headers: {
+        'Accept': 'application/json',
+    },
+})
+   .then(response => response.json())
+   .then(response => document.getElementById("totallightdata").innerHTML = JSON.stringify(response.result) + " minutes")
+   .then(response => console.log(JSON.stringify(response)));   
+
+ 
+    }
+    </script>
+  <body class="bg-success2" style="background-color: rgba(25, 135, 84, .6);">
+  
+  <center>
+<div class="container">
+ <div class="row">
+ <h1 class="pt-3">Device Information</h1>
+<form class="bg-light py-3 border border-primary">
+  <div class="mb-3">
+    <label for="did" class="form-label">Device ID</label>
+    <input type="text" name="did" class="form-control" id="did" aria-describedby="didhelp">
+    <div id="didHelp" class="form-text">This can be found in the Particle Console in the 'My Devices' menu.</div>
+  </div>
+  <div class="mb-3">
+    <label for="accesstoken" class="form-label">Access Token</label>
+    <input type="text" name="token" class="form-control" id="accesstoken">
+    <div id="accessHelp" class="form-text">This can be created <a href="https://docs.particle.io/reference/cloud-apis/access-tokens/" target="_blank" class="link-primary">here</a> under the "Create a token (browser-based)" area. Set the expiration to 'Never' so it will work continuously.</div>
+  </div>
+</form>
+</div>
+</div>
+
+</center>
+  
+  
+  <center>
+<div class="container">
+ <div class="row">
+<div class="h1 py-3"> Welcome to Code Green! </div><div class="h2">Here is the latest data from your Aquaponics System:</div>
+</div>
+
+
+ <div class="row bg-white px-3 py-3 border border-success">
+<div class="allsensordata">
+ <div class="row">
+	<div class="col-6 bg-light" id="temp">
+		<h1>Temperature<br/><i class="bi bi-thermometer-half"></i></h1>
+		<span id="tempdata" class="data h2">---</span> <br/> &mu;: <span id="avgtempdata" class="data h2">---</span>
+	</div>
+	<div class="col-6 bg-light" id="humid">
+    <h1>Humidity<br/><i class="bi bi-droplet-half"></i></h1>
+		<span id="humiddata"  class="data h2">---</span> <br/> &mu;: <span id="avghumiddata" class="data h2">---</span>
+	</div>
+</div>
+ <div class="row my-3">	
+	<div class="col-6 bg-light" id="light">
+    <h1>Brightness<br/><i class="bi bi-brightness-high"></i></h1>
+		<span id="lightdata" class="data h2">---</span> <br/> total: <span id="totallightdata" class="data h2">---</span>
+	</div>
+	<div class="col-6 bg-light" id="soilmoisture">
+    <h1>Soil Moisture<br/><i class="bi bi-moisture"></i></h1>
+		<span id="smdata" class="data h2">---</span> <br/> &mu;: <span id="avgsmdata" class="data h2">---</span>
+	</div>
+</div>	
+</div>
+
+	<a target="#" class="btn btn-primary my-3 col-6 offset-3 btn-lg" id="refreshdata" onclick="start()">Get Most Recent Data</a>
+	
+</div>
+</div>	
+	
+</center>
+</body>
+</html>
